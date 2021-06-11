@@ -1,9 +1,13 @@
 {
-  "name": "webSocket",
+  "name": "websocket",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev:server": "ts-node-dev --inspect --transpile-only --respawn --ignore-watch node_modules src/server.ts"
+  },
   "devDependencies": {
+    "@types/express": "^4.17.12",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "eslint": "^7.28.0",
@@ -14,6 +18,10 @@
     "eslint-plugin-import-helpers": "^1.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.3.1",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
