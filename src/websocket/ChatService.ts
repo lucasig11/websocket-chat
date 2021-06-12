@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import { CreateChatRoomService } from '../services/CreateChatRoomService';
 import { CreateMessageService } from '../services/CreateMessageService';
 import { CreateUserService } from '../services/CreateUserService';
+import { GetRoomByIdService } from '../services/GetRoomByIdService';
 import { GetRoomMessagesService } from '../services/GetRoomMessagesService';
 import { GetUsersBySocketIDService } from '../services/GetUsersBySocketIDService';
 import { io } from '../shared/http';
@@ -59,6 +60,7 @@ io.on('connect', (socket) => {
   socket.on('chat:message', async ({ message, room_id }) => {
     const createMessage = container.resolve(CreateMessageService);
     const getUsersBySocketId = container.resolve(GetUsersBySocketIDService);
+    const getRoomById = container.resolve(GetRoomByIdService);
 
     const [user] = await getUsersBySocketId.execute({
       clients: [socket.id],
@@ -70,9 +72,21 @@ io.on('connect', (socket) => {
       from: user._id,
     });
 
+    const roomInfo = await getRoomById.execute(room_id);
+
+    const [targetUser] = roomInfo.users.filter(
+      (u) => String(u._id) !== String(user._id)
+    );
+
     io.to(room_id).emit('chat:message', {
       message: new_message,
       user,
+    });
+
+    io.to(targetUser.socket_id).emit('chat:notification', {
+      message: true,
+      room_id,
+      from: user,
     });
   });
 });

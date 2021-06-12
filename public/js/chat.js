@@ -31,16 +31,28 @@ function onLoad() {
       addMessage(data);
     }
   })
+
+  socket.on('chat:notification', ({ room_id: roomId, from }) => {
+    if (room_id === roomId) return;
+    const userDiv = document.getElementById(`user_${from._id}`)
+
+    userDiv.insertAdjacentHTML('afterbegin', `
+      <div class="notification"/>
+    `)
+  })
 }
 
 document.getElementById('users_list').addEventListener('click', (e) => {
   document.getElementById('message_user').innerHTML = '';
   if (e.target && e.target.matches('li.user_name_list')) {
     const idUser = e.target.getAttribute('idUser');
+    const notification = document.querySelector(`#user_${idUser} .notification`);
 
-    socket.emit('chat:initPrivate', {idUser}, (room, messages) => {
+    if (notification) notification.remove();
+
+    socket.emit('chat:initPrivate', { idUser }, (room, messages) => {
       room_id = room.id;
-      messages.map(message => addMessage({message}))
+      messages.map(message => addMessage({ message }))
     })
   }
 })
@@ -51,7 +63,7 @@ document.getElementById('user_message').addEventListener('keypress', (e) => {
     const message = e.target.value;
     e.target.value = '';
 
-    socket.emit('chat:message', {message, room_id})
+    socket.emit('chat:message', { message, room_id })
   }
 })
 
