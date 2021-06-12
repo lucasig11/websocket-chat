@@ -11,6 +11,8 @@ interface IRequest {
 @injectable()
 export class CreateMessageService {
   public async execute({ message, from, room_id }: IRequest): Promise<Message> {
-    return Message.create({ message, from, room_id });
+    const new_message = await Message.create({ message, from, room_id });
+
+    return new_message.populate('from').execPopulate();
   }
 }
