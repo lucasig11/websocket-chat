@@ -5,11 +5,11 @@
     "rootDir": "./src",
     "removeComments": true,
     "strict": true,
-    "baseUrl": "./src",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": ["./src/**/*.ts"]
 }

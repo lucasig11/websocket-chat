@@ -2,7 +2,6 @@
   "name": "websocket",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "index.js",
   "scripts": {
     "dev:server": "ts-node-dev --cls --quiet --transpile-only --respawn --ignore-watch node_modules src/shared/server.ts"
   },
