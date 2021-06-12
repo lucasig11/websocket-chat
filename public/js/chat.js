@@ -1,6 +1,6 @@
 const socket = io('http://localhost:3333');
 
-let roomId;
+let room_id;
 
 function onLoad() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -26,6 +26,9 @@ function onLoad() {
 
   socket.emit('chat:getUsers', users => users.map(user => addUser(user)));
 
+  socket.on('chat:message', data => {
+    console.log(data);
+  })
 }
 
 document.getElementById('users_list').addEventListener('click', (e) => {
@@ -33,11 +36,20 @@ document.getElementById('users_list').addEventListener('click', (e) => {
     const idUser = e.target.getAttribute('idUser');
 
     socket.emit('chat:initPrivate', {idUser}, (room) => {
-      roomId = room.id;
+      room_id = room.id;
     })
   }
 })
 
+
+document.getElementById('user_message').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    const message = e.target.value;
+    e.target.value = '';
+
+    socket.emit('chat:message', {message, room_id})
+  }
+})
 
 function addUser(user) {
   const findUser = document.getElementById(`user_${user._id}`);
