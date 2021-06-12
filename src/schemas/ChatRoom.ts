@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { v4 } from 'uuid';
 
-import { User } from './Users';
+import { User } from './User';
 
 type ChatRoom = Document & {
   users: User[];
@@ -10,8 +10,8 @@ type ChatRoom = Document & {
 
 const ChatRoomSchema = new Schema({
   users: {
-    type: Schema.Types.ObjectId,
-    ref: 'Users',
+    type: [Schema.Types.ObjectId],
+    ref: 'User',
   },
   id: {
     type: String,
