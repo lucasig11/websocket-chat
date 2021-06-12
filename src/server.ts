@@ -1,5 +1,5 @@
-import express from 'express';
+import { server } from './http';
 
-const app = express();
-
-app.listen(3333, () => console.info('Server started succesfully.'));
+server.listen(3333, () =>
+  console.info('[\x1b[92mSUCCESS\x1b[0m]', 'Server started.')
+);
