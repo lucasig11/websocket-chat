@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 
-import { User } from '../schemas/Users';
+import { User } from '../schemas/User';
 
 interface IRequest {
   name: string;
