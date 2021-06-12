@@ -1,18 +1,16 @@
 import { injectable } from 'tsyringe';
 
-import { User } from '../schemas/Users';
+import { User } from '../schemas/User';
 
 interface IRequest {
   clients: string[];
 }
 
 @injectable()
-export default class ListConnectedClient {
+export default class GetUsersBySocketIDService {
   public async execute({ clients }: IRequest): Promise<User[]> {
-    const users = await User.find({
+    return User.find({
       socket_id: { $in: clients },
     });
-
-    return users;
   }
 }
