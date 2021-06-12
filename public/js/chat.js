@@ -27,7 +27,9 @@ function onLoad() {
   socket.emit('chat:getUsers', users => users.map(user => addUser(user)));
 
   socket.on('chat:message', data => {
-    addMessage(data);
+    if (data.message.room_id === room_id) {
+      addMessage(data);
+    }
   })
 }
 
