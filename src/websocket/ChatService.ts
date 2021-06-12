@@ -2,8 +2,9 @@ import { container } from 'tsyringe';
 
 import { CreateChatRoomService } from '../services/CreateChatRoomService';
 import { CreateMessageService } from '../services/CreateMessageService';
-import CreateUserService from '../services/CreateUserService';
-import GetUsersBySocketID from '../services/GetUsersBySocketIDService';
+import { CreateUserService } from '../services/CreateUserService';
+import { GetRoomMessagesService } from '../services/GetRoomMessagesService';
+import { GetUsersBySocketIDService } from '../services/GetUsersBySocketIDService';
 import { io } from '../shared/http';
 
 io.on('connect', (socket) => {
@@ -24,7 +25,7 @@ io.on('connect', (socket) => {
   socket.on('chat:getUsers', async (callback) => {
     const sockets = await io.fetchSockets();
 
-    const listClients = container.resolve(GetUsersBySocketID);
+    const listClients = container.resolve(GetUsersBySocketIDService);
 
     const clients = sockets.reduce<string[]>((result, soc) => {
       if (soc.id !== socket.id) result.push(soc.id);
@@ -39,7 +40,8 @@ io.on('connect', (socket) => {
   socket.on('chat:initPrivate', async (data, callback) => {
     const createChatRoom = container.resolve(CreateChatRoomService);
 
-    const getUsersBySocketId = container.resolve(GetUsersBySocketID);
+    const getUsersBySocketId = container.resolve(GetUsersBySocketIDService);
+    const getRoomMessages = container.resolve(GetRoomMessagesService);
 
     const [user] = await getUsersBySocketId.execute({
       clients: [socket.id],
@@ -47,14 +49,16 @@ io.on('connect', (socket) => {
 
     const room = await createChatRoom.execute([user._id, data.idUser]);
 
+    const roomMessages = await getRoomMessages.execute(room.id);
+
     socket.join(room.id);
 
-    callback(room);
+    callback(room, roomMessages);
   });
 
   socket.on('chat:message', async ({ message, room_id }) => {
     const createMessage = container.resolve(CreateMessageService);
-    const getUsersBySocketId = container.resolve(GetUsersBySocketID);
+    const getUsersBySocketId = container.resolve(GetUsersBySocketIDService);
 
     const [user] = await getUsersBySocketId.execute({
       clients: [socket.id],

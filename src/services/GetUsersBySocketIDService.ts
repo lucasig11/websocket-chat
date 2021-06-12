@@ -7,7 +7,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class GetUsersBySocketIDService {
+export class GetUsersBySocketIDService {
   public async execute({ clients }: IRequest): Promise<User[]> {
     return User.find({
       socket_id: { $in: clients },

@@ -10,7 +10,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class CreateUserService {
+export class CreateUserService {
   public async execute({
     name,
     email,
