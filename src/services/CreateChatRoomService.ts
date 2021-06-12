@@ -13,7 +13,6 @@ export class CreateChatRoomService {
     }).exec();
 
     if (findUsersRoom) {
-      console.log('has room');
       return findUsersRoom;
     }
 
