@@ -1,14 +1,14 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 type Message = Document & {
-  to: string;
-  text: string;
+  from: string;
+  message: string;
   room_id: string;
   created_at: Date;
 };
 
 const MessageSchema = new Schema({
-  to: {
+  from: {
     type: Schema.Types.ObjectId,
     ref: 'Users',
   },
@@ -20,7 +20,7 @@ const MessageSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
-  text: String,
+  message: String,
 });
 
 const Message = mongoose.model<Message>('Message', MessageSchema);
