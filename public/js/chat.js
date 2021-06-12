@@ -1,5 +1,6 @@
 const socket = io('http://localhost:3333');
 
+let roomId;
 
 function onLoad() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -23,7 +24,7 @@ function onLoad() {
 
   socket.on('chat:newUsers', data => addUser(data));
 
-  socket.emit('chat:getUsers', (users) => users.map(user => addUser(user)));
+  socket.emit('chat:getUsers', users => users.map(user => addUser(user)));
 
 }
 
@@ -32,7 +33,7 @@ document.getElementById('users_list').addEventListener('click', (e) => {
     const idUser = e.target.getAttribute('idUser');
 
     socket.emit('chat:initPrivate', {idUser}, (room) => {
-      console.log(room);
+      roomId = room.id;
     })
   }
 })
