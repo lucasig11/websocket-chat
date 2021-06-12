@@ -1,7 +1,8 @@
 import { container } from 'tsyringe';
 
+import { CreateChatRoomService } from '../services/CreateChatRoomService';
 import CreateUserService from '../services/CreateUserService';
-import ListConnectedClients from '../services/ListConnectedClients';
+import GetUsersBySocketID from '../services/GetUsersBySocketIDService';
 import { io } from '../shared/http';
 
 io.on('connect', (socket) => {
@@ -22,7 +23,7 @@ io.on('connect', (socket) => {
   socket.on('chat:getUsers', async (callback) => {
     const sockets = await io.fetchSockets();
 
-    const listClients = container.resolve(ListConnectedClients);
+    const listClients = container.resolve(GetUsersBySocketID);
 
     const clients = sockets.reduce<string[]>((result, soc) => {
       if (soc.id !== socket.id) result.push(soc.id);
@@ -32,5 +33,19 @@ io.on('connect', (socket) => {
     const users = await listClients.execute({ clients });
 
     callback(users);
+  });
+
+  socket.on('chat:initPrivate', async (data, callback) => {
+    const createChatRoom = container.resolve(CreateChatRoomService);
+
+    const getUsersBySocketId = container.resolve(GetUsersBySocketID);
+
+    const [user] = await getUsersBySocketId.execute({
+      clients: [socket.id],
+    });
+
+    const room = await createChatRoom.execute([user._id, data.idUser]);
+
+    callback(room);
   });
 });

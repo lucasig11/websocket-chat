@@ -27,7 +27,15 @@ function onLoad() {
 
 }
 
-onLoad();
+document.getElementById('users_list').addEventListener('click', (e) => {
+  if (e.target && e.target.matches('li.user_name_list')) {
+    const idUser = e.target.getAttribute('idUser');
+
+    socket.emit('chat:initPrivate', {idUser}, (room) => {
+      console.log(room);
+    })
+  }
+})
 
 
 function addUser(user) {
@@ -35,9 +43,11 @@ function addUser(user) {
   if (findUser) return;
   const userList = document.getElementById("users_list")
   userList.innerHTML += `
-    <li class="user_name_list" id="user_${user._id}" idUser="${user._id}">
-      <img class="nav_avatar" src="${user.avatar}" />
-      ${user.name}
-    </li>
+  <li class="user_name_list" id="user_${user._id}" idUser="${user._id}">
+  <img class="nav_avatar" src="${user.avatar}" />
+  ${user.name}
+  </li>
   `
 };
+
+onLoad();
