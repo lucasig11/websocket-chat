@@ -35,14 +35,14 @@
       <!-- Right -->
       <div class="w-9/12 bg-gray-700" id="c_message">
         <div class="message_user" id="message_user">
-          <span class="user_name user_name_date">
+          <!-- <span class="user_name user_name_date">
             <img class="img_user" src="https://avatars.githubusercontent.com/u/5041791?v=4" />
             <strong>Daniele Leão Evangelista</strong>
             <span> 20/10/2020</span>
           </span>
           <div class="messages">
             <span class="chat_message"> Oi tudo bem?</span>
-          </div>
+          </div> -->
         </div>
 
         <input type="text" id="user_message" class="
@@ -66,6 +66,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"
     integrity="sha512-eVL5Lb9al9FzgR63gDs1MxcDS2wFu3loYAgjIH0+Hg38tCS8Ag62dwKyH+wzDb+QauDpEZjXbMn11blw8cbTJQ=="
     crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/dayjs@1.8.21/plugin/utc.js"></script>
+  <script>dayjs.extend(window.dayjs_plugin_utc)</script>
   <script src="js/chat.js"></script>
 </body>
 

@@ -27,7 +27,7 @@ function onLoad() {
   socket.emit('chat:getUsers', users => users.map(user => addUser(user)));
 
   socket.on('chat:message', data => {
-    console.log(data);
+    addMessage(data);
   })
 }
 
@@ -35,8 +35,9 @@ document.getElementById('users_list').addEventListener('click', (e) => {
   if (e.target && e.target.matches('li.user_name_list')) {
     const idUser = e.target.getAttribute('idUser');
 
-    socket.emit('chat:initPrivate', {idUser}, (room) => {
+    socket.emit('chat:initPrivate', {idUser}, (room, messages) => {
       room_id = room.id;
+      messages.map(message => addMessage({message}))
     })
   }
 })
@@ -51,14 +52,29 @@ document.getElementById('user_message').addEventListener('keypress', (e) => {
   }
 })
 
+function addMessage(data) {
+  const messages = document.getElementById('message_user')
+
+  messages.innerHTML += `
+  <span class="user_name user_name_date">
+    <img class="img_user" src="${data.message.from.avatar}" />
+    <strong>${data.message.from.name}</strong>
+    <span class="message_date">${dayjs(data.message.created_at).utc().format('DD/MM/YYYY [às] HH:mm')}</span>
+  </span>
+  <div class="messages">
+    <span class="chat_message">${data.message.message}</span>
+  </div>
+  `
+}
+
 function addUser(user) {
   const findUser = document.getElementById(`user_${user._id}`);
   if (findUser) return;
   const userList = document.getElementById("users_list")
   userList.innerHTML += `
   <li class="user_name_list" id="user_${user._id}" idUser="${user._id}">
-  <img class="nav_avatar" src="${user.avatar}" />
-  ${user.name}
+    <img class="nav_avatar" src="${user.avatar}" />
+    ${user.name}
   </li>
   `
 };

@@ -3,6 +3,11 @@
   padding: 6px;
 }
 
+.message_date {
+  margin-left: 10px;
+  font-size: 12px;
+}
+
 .user_name {
   padding: 10px;
   display: flex;
