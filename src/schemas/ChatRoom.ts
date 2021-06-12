@@ -15,7 +15,7 @@ const ChatRoomSchema = new Schema({
   },
   id: {
     type: String,
-    default: v4(),
+    default: v4,
   },
 });
 
