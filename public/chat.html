@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="css/style.css" />
 
-  <title>Websocket</title>
+  <title>Websocket chat</title>
 </head>
 
 <body>
@@ -22,7 +22,6 @@
         <div id="users" class="m-3">
           <div class="bg-green w-4"></div>
           <ul id="users_list">
-            <!--  -->
           </ul>
         </div>
 
@@ -35,14 +34,6 @@
       <!-- Right -->
       <div class="w-9/12 bg-gray-700" id="c_message">
         <div class="message_user" id="message_user">
-          <!-- <span class="user_name user_name_date">
-            <img class="img_user" src="https://avatars.githubusercontent.com/u/5041791?v=4" />
-            <strong>Daniele Leão Evangelista</strong>
-            <span> 20/10/2020</span>
-          </span>
-          <div class="messages">
-            <span class="chat_message"> Oi tudo bem?</span>
-          </div> -->
         </div>
 
         <input type="text" id="user_message" class="
@@ -55,7 +46,7 @@
               p-2
               rounded
               focus:outline-none
-
+              hidden
             " placeholder="Digite sua mensagem" />
       </div>
     </div>
